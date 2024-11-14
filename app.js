@@ -1,6 +1,44 @@
 import { db } from './firebase.js';
 import { collection, addDoc, getDocs, query, where, orderBy } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
+
+document.addEventListener('DOMContentLoaded', () => {
+  const passwordModal = document.getElementById('passwordModal');
+  const appContainer = document.getElementById('appContainer');
+  const submitPasswordBtn = document.getElementById('submitPasswordBtn');
+  const passwordInput = document.getElementById('passwordInput');
+  const errorMessage = document.getElementById('errorMessage');
+
+
+  passwordModal.classList.add('show');
+  submitPasswordBtn.addEventListener('click', () => {
+    const password = passwordInput.value;
+    if (password === 'gisho321') {
+      passwordModal.classList.remove('show');
+      appContainer.style.display = 'block';
+    } else {
+      errorMessage.style.display = 'block';
+    }
+  });
+
+  passwordInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      submitPasswordBtn.click();
+    }
+  });
+});
+
+togglePassword.addEventListener('click', () => {
+  if (passwordInput.type === 'password') {
+    passwordInput.type = 'text';
+    togglePassword.textContent = '✖️';
+  } else {
+    passwordInput.type = 'password';
+    togglePassword.textContent = '👁️';
+  }
+});
+
+
 async function addNote() {
   const carNumber = document.getElementById('carNumber').value.trim();
   const note = document.getElementById('note').value.trim();
@@ -17,15 +55,15 @@ async function addNote() {
       date: new Date().toISOString()
     });
     alert('Заметка сохранена!');
-    document.getElementById('carNumber').value = ''; 
-    document.getElementById('note').value = ''; 
+    document.getElementById('carNumber').value = '';
+    document.getElementById('note').value = '';
   } catch (error) {
     console.error('Ошибка при сохранении заметки:', error);
   }
 }
 
 async function searchNotes() {
-  const searchCarNumber = document.getElementById('searchCarNumber').value.trim();
+  const searchCarNumber = document.getElementById('searchCarNumber').value.trim().toLowerCase();
   const resultsDiv = document.getElementById('results');
   resultsDiv.innerHTML = '';
 
@@ -35,17 +73,20 @@ async function searchNotes() {
   }
 
   try {
-    const querySnapshot = await getDocs(collection(db, 'notes'));
+    const notesQuery = query(
+      collection(db, 'notes'),
+      where('carNumber', '==', searchCarNumber)
+    );
+
+    const querySnapshot = await getDocs(notesQuery);
 
     const filteredNotes = [];
     querySnapshot.forEach(doc => {
       const data = doc.data();
-      if (data.carNumber === searchCarNumber) {
-        filteredNotes.push({
-          ...data,
-          id: doc.id
-        });
-      }
+      filteredNotes.push({
+        ...data,
+        id: doc.id
+      });
     });
 
     filteredNotes.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -65,12 +106,13 @@ async function searchNotes() {
   }
 }
 
+
 async function loadHistory() {
   const historyDiv = document.getElementById('history');
   historyDiv.innerHTML = '';
 
   try {
-    const q = query(collection(db, 'notes'), orderBy('date', 'desc')); 
+    const q = query(collection(db, 'notes'), orderBy('date', 'desc'));
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
@@ -97,7 +139,7 @@ document.getElementById('addNoteMenuBtn').addEventListener('click', () => {
   document.getElementById('historySection').style.display = 'none';
   document.getElementById('addNoteMenuBtn').classList.add('active');
   document.getElementById('historyMenuBtn').classList.remove('active');
- 
+
   document.getElementById('results').innerHTML = '';
 });
 
