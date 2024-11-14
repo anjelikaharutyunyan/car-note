@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Notes App</title>
+  <style>
+    
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  background-color: #ffffff;
+  padding: 20px;
+  margin-top: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+h2 {
+  text-align: center;
+  color: #4CAF50;
+  margin-bottom: 20px;
+}
+
+#menu {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #4CAF50;
+}
+
+#menu button {
+  background-color: transparent;
+  color: #4CAF50;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+
+#menu button.active {
+  font-weight: bold;
+  border-bottom: 2px solid #4CAF50;
+}
+
+#menu button:hover {
+  background-color: #f0f0f0;
+}
+
+input, textarea, button {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+#results {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f8f8f8;
+  border-radius: 6px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+#results div {
+  background-color: #fff;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#results div p {
+  margin: 0;
+}
+
+#history {
+  margin-top: 20px;
+}
+
+#history div {
+  background-color: #f9f9f9;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.history-item span {
+  display: inline-block;
+  margin-right: 15px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 15px;
+  }
+
+  input, textarea, button {
+    font-size: 14px;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Menu -->
+    <div id="menu">
+      <button id="addNoteMenuBtn" class="active">Добавить Заметку</button>
+      <button id="historyMenuBtn">История Заметок</button>
+    </div>
+
+    <!-- Add Note Section -->
+    <div id="addNoteSection">
+      <h2>Добавить Заметку</h2>
+      <input type="text" id="carNumber" placeholder="Номер машины">
+      <textarea id="note" placeholder="Заметка"></textarea>
+      <button id="saveNoteBtn">Сохранить Заметку</button>
+      <hr>
+      <h2>Поиск Заметок</h2>
+      <input type="text" id="searchCarNumber" placeholder="Введите номер машины для поиска">
+      <button id="searchBtn">Найти Заметки</button>
+      <div id="results"></div>
+    </div>
+
+    <div id="historySection" style="display: none;">
+      <h2>История Заметок</h2>
+      <div id="history"></div>
+    </div>
+
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
